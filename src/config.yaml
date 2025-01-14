@@ -1,0 +1,24 @@
+server:
+ url: "https://dev-us-sny-10.headspin.io:7021"
+ api: "e84b6bd9550f41bf9403ef25b776c8bd"
+ios_caps:
+  platformName: "iOS"
+  automationName: "xcuitest"
+  platformVersion: "15.7"
+  deviceName: "iPhone 12 Mini"
+  browserName: 'Safari'
+  udid: "00008101-000470E61438001E"
+web_android_caps:
+  automationName: "uiautomator2"
+  platformName: "android"
+  udid: "R5CT22EEYNR"
+  browserName: 'Chrome'
+
+android_caps:
+  automationName: "uiautomator2"
+  platformName: "android"
+  udid: "R5CT22EEYNR"
+  appPackage: "com.android.settings"
+  appActivity: "com.android.settings.Settings"
+
+  
