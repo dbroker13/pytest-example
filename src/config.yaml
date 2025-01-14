@@ -1,6 +1,6 @@
 server:
  url: "https://dev-us-sny-10.headspin.io:7021"
- api: "e84b6bd9550f41bf9403ef25b776c8bd"
+ api: ""
 ios_caps:
   platformName: "iOS"
   automationName: "xcuitest"
