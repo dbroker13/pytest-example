@@ -3,6 +3,8 @@ from os import path
 import pytest
 import yaml
 
+from appium.options.common import AppiumOptions
+
 CUR_DIR = path.dirname(path.abspath(__file__))
 # YAML_CONFIG = path.join(CUR_DIR, '..', 'mobile', 'app-release.apk')
 YAML_CONFIG = path.join(CUR_DIR, 'config.yaml')
@@ -16,7 +18,7 @@ def load_yaml():
 def pytest_addoption(parser):
     parser.addoption('--platform', action='store', default='ios')
 
-@pytest.fixture
+@pytest.fixture(scope='class')
 def platform(request):
     plat = request.config.getoption('platform').lower()
     if plat not in ['ios', 'android']:
@@ -51,7 +53,7 @@ def ios_driver():
     #could keep executing code after its done
     driver.quit()
 
-@pytest.fixture
+@pytest.fixture(scope='class')
 def android_driver(platform):
     config = load_yaml()
     api_token = config['server']['api']
@@ -60,11 +62,36 @@ def android_driver(platform):
     CAPS = config['android_caps']
     android_driver = webdriver.Remote(
         command_executor=APPIUM,
-        desired_capabilities=CAPS
-    )
+        options=AppiumOptions().load_capabilities(CAPS))
+    # android_driver = webdriver.Remote(
+    #     command_executor=APPIUM,
+    #     desired_capabilities=CAPS
+    # )
     yield android_driver
     #could keep executing code after its done
     android_driver.quit()
+
+
+# @pytest.fixture
+# def driver(platform):
+#     config = load_yaml()
+#     api_token = config['server']['api']
+#     url = config['server']['url']
+#     APPIUM = f'{url}/v0/{api_token}/wd/hub'
+#     platform = 'android'
+#     print(platform)
+#     if platform == 'ios':
+#         CAPS = config['ios_caps']
+#     else:
+#         CAPS = config['web_android_caps']
+#     print(CAPS)
+#     driver = webdriver.Remote(
+#         command_executor=APPIUM,
+#         desired_capabilities=CAPS
+#     )
+#     yield driver
+#     #could keep executing code after its done
+#     driver.quit()
 
 @pytest.fixture
 def driver(platform):
@@ -81,8 +108,7 @@ def driver(platform):
     print(CAPS)
     driver = webdriver.Remote(
         command_executor=APPIUM,
-        desired_capabilities=CAPS
-    )
+        options=AppiumOptions().load_capabilities(CAPS))
     yield driver
     #could keep executing code after its done
     driver.quit()
